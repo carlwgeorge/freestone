@@ -1,0 +1,8 @@
+FROM registry.fedoraproject.org/fedora:29
+RUN sed --expression '/tsflags=nodocs/d' --in-place /etc/dnf/dnf.conf
+RUN dnf --assumeyes install python3-{click,sh} dnf-utils dnf-yum && dnf clean all && rm -rf /var/cache/dnf
+COPY freestone.py /usr/local/bin/freestone
+RUN sed --expression '1 s/python$/python3/' --in-place /usr/local/bin/freestone
+RUN chmod +x /usr/local/bin/freestone
+ENTRYPOINT ["/usr/local/bin/freestone"]
+# vim: ft=dockerfile

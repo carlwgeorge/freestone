@@ -1,0 +1,8 @@
+FROM registry.centos.org/centos/centos:6
+RUN sed --expression '/tsflags=nodocs/d' --in-place /etc/yum.conf
+RUN yum --disablerepo '*' --assumeyes install https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+RUN yum --assumeyes install python-{click,pathlib,sh} yum-utils && yum clean all && rm -rf /var/cache/yum
+COPY freestone.py /usr/local/bin/freestone
+RUN chmod +x /usr/local/bin/freestone
+ENTRYPOINT ["/usr/local/bin/freestone"]
+# vim: ft=dockerfile
